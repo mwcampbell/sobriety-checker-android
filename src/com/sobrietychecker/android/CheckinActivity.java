@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.telephony.SmsManager;
 import android.view.View;
 
 public class CheckinActivity extends Activity {
@@ -41,10 +42,21 @@ public class CheckinActivity extends Activity {
         Uri contactUri = Uri.parse(mPrefs.getString(PREF_SPONSOR_CONTACT_URI, null));
         String phoneNumber = getMobilePhoneNumber(contactUri);
         if (phoneNumber != null) {
+            String body = getString(R.string.message_body_prefix) + " " + getString(bodyStringId);
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(phoneNumber, null, getString(R.string.message_body_prefix) + " " + getString(bodyStringId), null, null);
+            new AlertDialog.Builder(this).setTitle(getString(R.string.app_name)).setMessage(getString(R.string.message_sent_prefix) + " " + body).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            }).show();
+/*
             Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNumber));
-            intent.putExtra("sms_body", getString(R.string.message_body_prefix) + " " + getString(bodyStringId));
+            intent.putExtra("sms_body", body);
             startActivity(intent);
             finish();
+*/
             return;
         }
     }
