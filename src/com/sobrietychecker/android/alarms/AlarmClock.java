@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -126,7 +125,6 @@ public class AlarmClock extends Activity implements OnItemClickListener {
             c.set(Calendar.HOUR_OF_DAY, alarm.hour);
             c.set(Calendar.MINUTE, alarm.minutes);
             digitalClock.updateTime(c);
-            digitalClock.setTypeface(Typeface.DEFAULT);
 
             // Set the repeat text or leave it blank if it does not repeat.
             TextView daysOfWeekView =
@@ -206,7 +204,7 @@ public class AlarmClock extends Activity implements OnItemClickListener {
         super.onCreate(icicle);
 
         mFactory = LayoutInflater.from(this);
-        mPrefs = getSharedPreferences(PREFERENCES, 0);
+        mPrefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         mCursor = Alarms.getAlarmsCursor(getContentResolver());
 
         updateLayout();

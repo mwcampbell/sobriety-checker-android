@@ -44,7 +44,7 @@
     <string name="alarm_label">Label</string>
 
     <!-- Default label to display for an alarm -->
-    <string name="alarm_default_label">Alarm</string>
+    <string name="alarm_default_label">Sobriety Check</string>
 
     <!-- Preference category on Alarm Settings screen: Set alarm -->
     <string name="set_alarm">Set alarm</string>
@@ -70,11 +70,11 @@
     <string name="alarm_alert_alert_silenced">Alarm silenced after <xliff:g id="minutes">%d</xliff:g> minutes</string>
 
     <!-- Button labels on the alarm dialog: Snooze -->
-    <string name="alarm_alert_snooze_text">Snooze</string>
+    <string name="alarm_alert_snooze_text">Wait</string>
 
     <!-- Toast that appears after Alarm is snoozed from the Alarm
          dialog. Says the alarm will snooze for xxx minutes.  -->
-    <string name="alarm_alert_snooze_set">Snoozing for <xliff:g id="minutes">%d</xliff:g> minutes.</string>
+    <string name="alarm_alert_snooze_set">Waiting for <xliff:g id="minutes">%d</xliff:g> minutes.</string>
 
     <!-- 0: nothing
          1: days
@@ -144,7 +144,7 @@
     <string name="alarm_in_silent_mode_summary">Play alarm even when the phone is in silent mode</string>
 
     <!-- Setting title for changing the snooze duration. -->
-    <string name="snooze_duration_title">Snooze duration</string>
+    <string name="snooze_duration_title">Wait duration</string>
 
     <!-- Entries listed in the ListPreference when invoking the snooze duration
          preference. -->
@@ -190,7 +190,7 @@
     <string name="alarm_notify_text">Time for a sobriety check.</string>
 
     <!-- Text to display in the notification ticker and label -->
-    <string name="alarm_notify_snooze_label"><xliff:g id="label">%s</xliff:g> (snoozed)</string>
+    <string name="alarm_notify_snooze_label"><xliff:g id="label">%s</xliff:g> (deferred)</string>
 
     <!-- Text to display in the notification when the alarm has been snoozed -->
     <string name="alarm_notify_snooze_text">Alarm set for <xliff:g id="time">%s</xliff:g>. Select to cancel.</string>
@@ -207,8 +207,8 @@
     <!-- Entries listed in the setting for the side-button action. -->
     <string-array name="volume_button_setting_entries">
       <item>None</item>
-      <item>Snooze</item>
-      <item>Acknowledge</item>
+      <item>Wait</item>
+      <item>Check in</item>
     </string-array>
 
     <!-- Values for the side-button setting. -->

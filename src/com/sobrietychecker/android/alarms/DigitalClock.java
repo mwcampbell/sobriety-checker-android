@@ -117,8 +117,7 @@ public class DigitalClock extends LinearLayout {
         super.onFinishInflate();
 
         if (sTypeface == null) {
-            sTypeface = Typeface.createFromAsset(getContext().getAssets(),
-                "fonts/Clockopia.ttf");
+            sTypeface = Typeface.DEFAULT;
         }
         mTimeDisplay = (TextView) findViewById(R.id.timeDisplay);
         mTimeDisplay.setTypeface(sTypeface);

@@ -392,7 +392,6 @@ public class Alarms {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(atTimeInMillis);
         String timeString = formatDayAndTime(context, c);
-        saveNextAlarm(context, timeString);
     }
 
     /**
@@ -408,13 +407,12 @@ public class Alarms {
                 PendingIntent.FLAG_CANCEL_CURRENT);
         am.cancel(sender);
         setStatusBarIcon(context, false);
-        saveNextAlarm(context, "");
     }
 
     static void saveSnoozeAlert(final Context context, final int id,
             final long time) {
         SharedPreferences prefs = context.getSharedPreferences(
-                AlarmClock.PREFERENCES, 0);
+                AlarmClock.PREFERENCES, Context.MODE_PRIVATE);
         if (id == -1) {
             clearSnoozePreference(context, prefs);
         } else {
@@ -432,7 +430,7 @@ public class Alarms {
      */
     static void disableSnoozeAlert(final Context context, final int id) {
         SharedPreferences prefs = context.getSharedPreferences(
-                AlarmClock.PREFERENCES, 0);
+                AlarmClock.PREFERENCES, Context.MODE_PRIVATE);
         int snoozeId = prefs.getInt(PREF_SNOOZE_ID, -1);
         if (snoozeId == -1) {
             // No snooze set, do nothing.
@@ -467,7 +465,7 @@ public class Alarms {
      */
     private static boolean enableSnoozeAlert(final Context context) {
         SharedPreferences prefs = context.getSharedPreferences(
-                AlarmClock.PREFERENCES, 0);
+                AlarmClock.PREFERENCES, Context.MODE_PRIVATE);
 
         int id = prefs.getInt(PREF_SNOOZE_ID, -1);
         if (id == -1) {
@@ -550,16 +548,6 @@ public class Alarms {
     private static String formatDayAndTime(final Context context, Calendar c) {
         String format = get24HourMode(context) ? DM24 : DM12;
         return (c == null) ? "" : (String)DateFormat.format(format, c);
-    }
-
-    /**
-     * Save time of the next alarm, as a formatted string, into the system
-     * settings so those who care can make use of it.
-     */
-    static void saveNextAlarm(final Context context, String timeString) {
-        Settings.System.putString(context.getContentResolver(),
-                                  Settings.System.NEXT_ALARM_FORMATTED,
-                                  timeString);
     }
 
     /**

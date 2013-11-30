@@ -14,6 +14,8 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.telephony.SmsManager;
 import android.view.View;
 
+import com.sobrietychecker.android.alarms.AlarmClock;
+
 public class CheckinActivity extends Activity {
     private static final int CONTACT_PICKER_RESULT = 1001;
     private static final String PREF_SPONSOR_CONTACT_URI = "sponsor_contact_uri";
@@ -99,6 +101,12 @@ public class CheckinActivity extends Activity {
             @Override
             public void onClick(View v) {
                 pickSponsor();
+            }
+        });
+        findViewById(R.id.alarmsButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CheckinActivity.this, AlarmClock.class));
             }
         });
         updateVisibility();
