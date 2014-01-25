@@ -47,10 +47,10 @@
             android:text="@string/must_pick_sponsor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/pickSponsorButton"
+            android:text="@string/pick_sponsor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-    <Button
-        android:id="@+id/pickSponsorButton"
-        android:text="@string/pick_sponsor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 </LinearLayout>
