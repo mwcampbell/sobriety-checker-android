@@ -1,7 +1,7 @@
 import Image
 import ImageDraw
 
-for dpi, size in (("ldpi", 72), ("mdpi", 96), ("hdpi", 144)):
+for dpi, size in (("mdpi", 72), ("hdpi", 108)):
     for name, color in (("good", (0, 255, 0)),
                         ("slipping", (255, 255, 0)),
                         ("help_now", (255, 0, 0))):

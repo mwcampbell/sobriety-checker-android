@@ -5,7 +5,6 @@
     <string name="good">Green</string>
     <string name="slipping">Yellow</string>
     <string name="help_now">Red</string>
-    <string name="message_body_prefix">Sobriety check:</string>
     <string name="must_pick_sponsor">You need to choose your sponsor from your contacts first.</string>
     <string name="pick_sponsor">Choose Sponsor</string>
     <string name="no_mobile_phone_number">This contact has no mobile phone number.</string>

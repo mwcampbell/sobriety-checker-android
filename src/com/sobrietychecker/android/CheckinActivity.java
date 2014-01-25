@@ -9,21 +9,40 @@ import android.provider.ContactsContract.Contacts;
 import android.telephony.SmsManager;
 import android.view.View;
 
+import com.sobrietychecker.Status;
 import com.sobrietychecker.android.alarms.AlarmClock;
 
 public class CheckinActivity extends Activity {
     private static final int CONTACT_PICKER_RESULT = 1001;
 
+    private MessageStore mMessageStore = null;
     private SponsorStore mSponsorStore = null;
 
-    private void sendMessage(int bodyStringId) {
+    private static int getStatusStringId(int status) {
+        switch (status) {
+        case Status.GOOD:
+            return R.string.good;
+        case Status.SLIPPING:
+            return R.string.slipping;
+        case Status.HELP_NOW:
+            return R.string.help_now;
+        default:
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void sendMessage(int status) {
         SmsManager sms = SmsManager.getDefault();
-        String body = getString(R.string.message_body_prefix) + " " + getString(bodyStringId);
+        String body = getString(getStatusStringId(status));
+        String message = mMessageStore.getMessage(status);
+        if (message != null) {
+            body += ": " + message;
+        }
         boolean sentOne = false;
         for (Sponsor sponsor: mSponsorStore.getItems()) {
             String phoneNumber = sponsor.getMobilePhoneNumber();
             if (phoneNumber != null) {
-                sms.sendTextMessage(phoneNumber, null, getString(R.string.message_body_prefix) + " " + getString(bodyStringId), null, null);
+                sms.sendTextMessage(phoneNumber, null, body, null, null);
                 sentOne = true;
             }
         }
@@ -51,24 +70,25 @@ public class CheckinActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mMessageStore = MessageStore.getInstance(this);
         mSponsorStore = SponsorStore.getInstance(this);
         setContentView(R.layout.main);
         findViewById(R.id.goodButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage(R.string.good);
+                sendMessage(Status.GOOD);
             }
         });
         findViewById(R.id.slippingButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage(R.string.slipping);
+                sendMessage(Status.SLIPPING);
             }
         });
         findViewById(R.id.helpNowButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage(R.string.help_now);
+                sendMessage(Status.HELP_NOW);
             }
         });
         findViewById(R.id.pickSponsorButton).setOnClickListener(new View.OnClickListener() {
