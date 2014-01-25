@@ -4,13 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract.Contacts;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.telephony.SmsManager;
 import android.view.View;
 
@@ -18,48 +13,27 @@ import com.sobrietychecker.android.alarms.AlarmClock;
 
 public class CheckinActivity extends Activity {
     private static final int CONTACT_PICKER_RESULT = 1001;
-    private static final String PREF_SPONSOR_CONTACT_URI = "sponsor_contact_uri";
 
-    private SharedPreferences mPrefs;
-
-    private String getMobilePhoneNumber(Uri contactUri) {
-        String contactId = contactUri.getLastPathSegment();
-        Cursor cursor = getContentResolver().query(Phone.CONTENT_URI, null, Phone.CONTACT_ID + "=?", new String[] {contactId}, null);
-        String phoneNumber = null;
-        if (cursor.moveToFirst()) {
-            do {
-                int typeIdx = cursor.getColumnIndex(Phone.TYPE);
-                int type = cursor.getInt(typeIdx);
-                if (type == Phone.TYPE_MOBILE) {
-                    int phoneIdx = cursor.getColumnIndex(Phone.DATA);
-                    phoneNumber = cursor.getString(phoneIdx);
-                    break;
-                }
-            } while (cursor.moveToNext());
-        }
-        return phoneNumber;
-    }
+    private SponsorStore mSponsorStore = null;
 
     private void sendMessage(int bodyStringId) {
-        Uri contactUri = Uri.parse(mPrefs.getString(PREF_SPONSOR_CONTACT_URI, null));
-        String phoneNumber = getMobilePhoneNumber(contactUri);
-        if (phoneNumber != null) {
-            String body = getString(R.string.message_body_prefix) + " " + getString(bodyStringId);
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(phoneNumber, null, getString(R.string.message_body_prefix) + " " + getString(bodyStringId), null, null);
+        SmsManager sms = SmsManager.getDefault();
+        String body = getString(R.string.message_body_prefix) + " " + getString(bodyStringId);
+        boolean sentOne = false;
+        for (Sponsor sponsor: mSponsorStore.getItems()) {
+            String phoneNumber = sponsor.getMobilePhoneNumber();
+            if (phoneNumber != null) {
+                sms.sendTextMessage(phoneNumber, null, getString(R.string.message_body_prefix) + " " + getString(bodyStringId), null, null);
+                sentOne = true;
+            }
+        }
+        if (sentOne) {
             new AlertDialog.Builder(this).setTitle(getString(R.string.app_name)).setMessage(getString(R.string.message_sent_prefix) + " " + body).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
                 }
             }).show();
-/*
-            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNumber));
-            intent.putExtra("sms_body", body);
-            startActivity(intent);
-            finish();
-*/
-            return;
         }
     }
 
@@ -69,7 +43,7 @@ public class CheckinActivity extends Activity {
     }
 
     private void updateVisibility() {
-        boolean hasSponsor = mPrefs.contains(PREF_SPONSOR_CONTACT_URI);
+        boolean hasSponsor = mSponsorStore.getItemCount() > 0;
         findViewById(R.id.hasSponsor).setVisibility(hasSponsor ? View.VISIBLE : View.GONE);
         findViewById(R.id.noSponsor).setVisibility(!hasSponsor ? View.VISIBLE : View.GONE);
     }
@@ -77,7 +51,7 @@ public class CheckinActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSponsorStore = SponsorStore.getInstance(this);
         setContentView(R.layout.main);
         findViewById(R.id.goodButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,8 +92,9 @@ public class CheckinActivity extends Activity {
             return;
         }
         if (requestCode == CONTACT_PICKER_RESULT) {
-            Uri contactUri = data.getData();
-            if (getMobilePhoneNumber(contactUri) == null) {
+            String contactUri = data.getData().toString();
+            Sponsor sponsor = new Sponsor(this, contactUri);
+            if (!sponsor.isValid()) {
                 new AlertDialog.Builder(this).setTitle(getString(R.string.app_name)).setMessage(getString(R.string.no_mobile_phone_number)).setCancelable(true).setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -127,7 +102,7 @@ public class CheckinActivity extends Activity {
                 }).show();
                 return;
             }
-            mPrefs.edit().putString(PREF_SPONSOR_CONTACT_URI, contactUri.toString()).commit();
+            mSponsorStore.add(sponsor);
             updateVisibility();
         }
     }
