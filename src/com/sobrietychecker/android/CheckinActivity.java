@@ -12,7 +12,7 @@ import android.view.View;
 import com.sobrietychecker.Status;
 import com.sobrietychecker.android.alarms.AlarmClock;
 
-public class CheckinActivity extends Activity {
+public final class CheckinActivity extends Activity {
     private static final int CONTACT_PICKER_RESULT = 1001;
 
     private MessageStore mMessageStore = null;
@@ -123,6 +123,7 @@ public class CheckinActivity extends Activity {
                 return;
             }
             mSponsorStore.add(sponsor);
+            startActivity(new Intent(this, SetMessagesActivity.class));
             updateVisibility();
         }
     }

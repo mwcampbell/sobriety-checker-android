@@ -9,6 +9,7 @@
     <string name="pick_sponsor">Choose Sponsor</string>
     <string name="no_mobile_phone_number">This contact has no mobile phone number.</string>
     <string name="message_sent_prefix">Message sent:</string>
+    <string name="set_messages">Enter Personal Messages</string>
 
     <!-- Strings for alarms -->
 
