@@ -20,6 +20,23 @@ public final class Sponsor {
         this.contactUri = contactUri;
     }
 
+    public String getDisplayName() {
+        Uri contactUriObject = Uri.parse(contactUri);
+        String contactId = contactUriObject.getLastPathSegment();
+        Cursor cursor = mContext.getContentResolver().query(Phone.CONTENT_URI, null, Phone.CONTACT_ID + "=?", new String[] {contactId}, null);
+        String displayName = null;
+        if (cursor.moveToFirst()) {
+            int displayNameIdx = cursor.getColumnIndex(Phone.DISPLAY_NAME);
+            displayName = cursor.getString(displayNameIdx);
+        }
+        return displayName;
+    }
+
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
+
     public String getMobilePhoneNumber() {
         Uri contactUriObject = Uri.parse(contactUri);
         String contactId = contactUriObject.getLastPathSegment();

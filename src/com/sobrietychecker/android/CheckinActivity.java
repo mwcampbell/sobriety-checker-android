@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
 import android.telephony.SmsManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.sobrietychecker.Status;
@@ -97,12 +99,11 @@ public final class CheckinActivity extends Activity {
                 pickSponsor();
             }
         });
-        findViewById(R.id.alarmsButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(CheckinActivity.this, AlarmClock.class));
-            }
-        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         updateVisibility();
     }
 
@@ -126,5 +127,26 @@ public final class CheckinActivity extends Activity {
             startActivity(new Intent(this, SetMessagesActivity.class));
             updateVisibility();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_alarms:
+                startActivity(new Intent(this, AlarmClock.class));
+                return true;
+            case R.id.menu_item_set_messages:
+                startActivity(new Intent(this, SetMessagesActivity.class));
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

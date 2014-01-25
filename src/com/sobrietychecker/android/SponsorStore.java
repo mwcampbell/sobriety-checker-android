@@ -65,7 +65,7 @@ public final class SponsorStore {
         Collections.sort(items, new Comparator<Sponsor>() {
             @Override
             public int compare(Sponsor a, Sponsor b) {
-                return a.contactUri.compareTo(b.contactUri);
+                return a.getDisplayName().compareToIgnoreCase(b.getDisplayName());
             }
         });
         return items;
