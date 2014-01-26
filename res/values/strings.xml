@@ -10,6 +10,10 @@
     <string name="no_mobile_phone_number">This contact has no mobile phone number.</string>
     <string name="message_sent_prefix">Message sent:</string>
     <string name="set_messages">Enter Personal Messages</string>
+    <string name="sponsors">Sponsors</string>
+    <string name="add_sponsor">Add sponsor</string>
+    <string name="delete_sponsor">Delete sponsor</string>
+    <string name="delete_sponsor_confirm">This sponsor will be deleted.</string>
 
     <!-- Strings for alarms -->
 

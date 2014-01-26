@@ -144,6 +144,9 @@ public final class CheckinActivity extends Activity {
             case R.id.menu_item_set_messages:
                 startActivity(new Intent(this, SetMessagesActivity.class));
                 return true;
+            case R.id.menu_item_sponsors:
+                startActivity(new Intent(this, SponsorsActivity.class));
+                return true;
             default:
                 break;
         }

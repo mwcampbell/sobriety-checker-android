@@ -3,6 +3,8 @@
         android:title="@string/alarm_list_title" />
     <item android:id="@+id/menu_item_set_messages"
         android:title="@string/set_messages" />
+    <item android:id="@+id/menu_item_sponsors"
+        android:title="@string/sponsors" />
 </menu>
 
 
